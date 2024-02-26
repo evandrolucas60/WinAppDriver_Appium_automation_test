@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Diagnostics;
@@ -62,22 +63,36 @@ namespace AlarmsAndClockSmokeTests
             txtLocation.SendKeys("São Paulo");
             txtLocation.SendKeys(Keys.ArrowDown);
             txtLocation.SendKeys(Keys.Enter);
-            
+
             sessionAlarms.FindElementByName("Adicionar").Click();
 
             var ClockItems = sessionAlarms.FindElementsByClassName("ListViewItem");
             bool wasClockTileFound = false;
+            WindowsElement tileFound = null;
+
             foreach (var clockTile in ClockItems)
             {
                 if (clockTile.Text.StartsWith("São Paulo, Brasil"))
                 {
-                    wasClockTileFound = true;
                     Debug.WriteLine("Clock found");
-                    break;
+                    wasClockTileFound = true;
+                    if (clockTile.Size.Width > 16)
+                    {
+                        tileFound = clockTile;
+                        break;
+                    }
                 }
             }
 
             Assert.IsTrue(wasClockTileFound, "No Clock tile found.");
+            Actions actionsForRightClick = new Actions(sessionAlarms);
+            actionsForRightClick.MoveToElement(tileFound);
+            actionsForRightClick.ContextClick();
+            actionsForRightClick.Perform();
+
+            var deleteClock = sessionAlarms.FindElementByAccessibilityId("ContextMenuDelete");
+            deleteClock.Click();
+
         }
     }
 }
