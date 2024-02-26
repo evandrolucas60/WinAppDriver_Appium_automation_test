@@ -64,6 +64,20 @@ namespace AlarmsAndClockSmokeTests
             txtLocation.SendKeys(Keys.Enter);
             
             sessionAlarms.FindElementByName("Adicionar").Click();
+
+            var ClockItems = sessionAlarms.FindElementsByClassName("ListViewItem");
+            bool wasClockTileFound = false;
+            foreach (var clockTile in ClockItems)
+            {
+                if (clockTile.Text.StartsWith("São Paulo, Brasil"))
+                {
+                    wasClockTileFound = true;
+                    Debug.WriteLine("Clock found");
+                    break;
+                }
+            }
+
+            Assert.IsTrue(wasClockTileFound, "No Clock tile found.");
         }
     }
 }
