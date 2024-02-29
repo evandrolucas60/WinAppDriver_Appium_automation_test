@@ -76,5 +76,32 @@ namespace WinFormsUITesting
                 }
             }
         }
+
+        [TestMethod]
+        public void MenuTest()
+        {
+            var allMenus = _driver.FindElementsByTagName("MenuItem");
+
+            Debug.WriteLine($"All menu items found by search: {allMenus.Count}");
+
+            foreach (var item in allMenus)
+            {
+                Debug.WriteLine($"+++++ Menu: {item.GetAttribute("Name")} -  Displayed: {item.Displayed}");
+            }
+
+            foreach (var mainMenuItem in allMenus)
+            {
+                if (mainMenuItem.GetAttribute("Name").Equals("File"))
+                {
+                    mainMenuItem.Click();
+                    var newMenu = mainMenuItem.FindElementByName("New");
+
+                    WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+                    wait.Until(x => newMenu.Displayed);
+
+                    newMenu.Click();
+                }
+            }
+        }
     }
 }
