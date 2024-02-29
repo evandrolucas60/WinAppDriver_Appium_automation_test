@@ -25,6 +25,28 @@ namespace WinFormsUITesting
         }
 
         [TestMethod]
+        public void GridTest()
+        {
+            var ratesGrid = _driver.FindElementByName("Rates Grid");
+            var allHeaders = ratesGrid.FindElementsByTagName("Header");
+
+            Debug.WriteLine($"*** Headers count: {allHeaders.Count}");
+
+            foreach (var item in allHeaders)
+            {
+                Debug.WriteLine($"*** {item.Text} - {item.Displayed} - {item.Enabled}");
+            }
+            var allCells = ratesGrid.FindElementsByTagName("DataItem");
+            Debug.WriteLine($"Grid cells count: {allCells.Count}");
+
+            foreach (var gridCell in allCells)
+            {
+                Debug.WriteLine($"*** Cell Name: {gridCell.GetAttribute("Name")} - Text: {gridCell.Text}");
+            }
+        }
+
+
+        [TestMethod]
         public void CheckBoxTest()
         {
             var check = _driver.FindElementByName("checkBox1");
