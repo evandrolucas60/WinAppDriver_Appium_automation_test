@@ -2,10 +2,10 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Diagnostics;
 using System.Threading;
-using System.Linq;
 
 namespace WinFormsUITesting
 {
@@ -64,6 +64,17 @@ namespace WinFormsUITesting
 
             listItems = combo.FindElementsByTagName("ListItem");
             Debug.WriteLine($"After: Number of list items found: {listItems.Count}");
+
+
+            foreach (var item in listItems)
+            {
+                if (item.Text == "KT")
+                {
+                    WebDriverWait wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
+                    wait.Until(x => item.Displayed);
+                    item.Click();
+                }
+            }
         }
     }
 }
