@@ -28,11 +28,11 @@ namespace AlarmsAndClockSmokeTests
         [ClassCleanup]
         public static void CleanupAfterAllAlarmsTests()
         {
-            //Debug.WriteLine("Hello ClassCleanup");
-            //if (sessionAlarms != null)
-            //{
-            //    sessionAlarms.Quit();
-            //}
+            Debug.WriteLine("Hello ClassCleanup");
+            if (sessionAlarms != null)
+            {
+                sessionAlarms.Quit();
+            }
         }
 
         [TestMethod]
@@ -53,7 +53,6 @@ namespace AlarmsAndClockSmokeTests
             //click the top button in top section of the app
             sessionAlarms.FindElementByAccessibilityId("ClockButton").Click();
             sessionAlarms.FindElementByName("Adicionar nova cidade").Click();
-            //Thread.Sleep(1000);
 
             WebDriverWait wait = new WebDriverWait(sessionAlarms, TimeSpan.FromSeconds(10));
 
@@ -92,7 +91,6 @@ namespace AlarmsAndClockSmokeTests
 
             var deleteClock = sessionAlarms.FindElementByAccessibilityId("ContextMenuDelete");
             deleteClock.Click();
-
         }
     }
 }
