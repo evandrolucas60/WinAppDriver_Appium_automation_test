@@ -2,6 +2,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Diagnostics;
@@ -100,6 +101,15 @@ namespace WinFormsUITesting
                     wait.Until(x => newMenu.Displayed);
 
                     newMenu.Click();
+
+                    Thread.Sleep(400);
+
+                    var lenderMenuThirdLevel = newMenu.FindElementByName("Third");
+
+                    Actions actionForRightClick = new Actions(_driver);
+                    actionForRightClick.MoveToElement(lenderMenuThirdLevel);
+                    actionForRightClick.Click();
+                    actionForRightClick.Perform();
                 }
             }
         }
