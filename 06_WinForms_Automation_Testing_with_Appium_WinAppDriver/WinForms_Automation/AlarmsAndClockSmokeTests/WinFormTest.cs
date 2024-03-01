@@ -13,7 +13,6 @@ namespace WinFormsUITesting
     [TestClass]
     public class WinFormTest
     {
-
         static WindowsDriver<WindowsElement> _driver;
 
         [ClassInitialize]
@@ -23,28 +22,6 @@ namespace WinFormsUITesting
             dcWinForms.AddAdditionalCapability("app", @"C:\Users\evandro.silva\Downloads\Application+under+test\DoNotDistrurbMortgageCalculatorFrom1999.exe");
             _driver = new WindowsDriver<WindowsElement>(new Uri("http://127.0.0.1:4723"), dcWinForms);
         }
-
-        [TestMethod]
-        public void GridTest()
-        {
-            var ratesGrid = _driver.FindElementByName("Rates Grid");
-            var allHeaders = ratesGrid.FindElementsByTagName("Header");
-
-            Debug.WriteLine($"*** Headers count: {allHeaders.Count}");
-
-            foreach (var item in allHeaders)
-            {
-                Debug.WriteLine($"*** {item.Text} - {item.Displayed} - {item.Enabled}");
-            }
-            var allCells = ratesGrid.FindElementsByTagName("DataItem");
-            Debug.WriteLine($"Grid cells count: {allCells.Count}");
-
-            foreach (var gridCell in allCells)
-            {
-                Debug.WriteLine($"*** Cell Name: {gridCell.GetAttribute("Name")} - Text: {gridCell.Text}");
-            }
-        }
-
 
         [TestMethod]
         public void CheckBoxTest()
@@ -71,8 +48,7 @@ namespace WinFormsUITesting
 
             Debug.WriteLine($"**** Value of radio First: {radioFirst.Selected}");
         }
-        
-        
+              
         [TestMethod]
         public void ComboTest()
         {
@@ -132,6 +108,36 @@ namespace WinFormsUITesting
                     actionForRightClick.MoveToElement(lenderMenuThirdLevel);
                     actionForRightClick.Click();
                     actionForRightClick.Perform();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GridTest()
+        {
+            var ratesGrid = _driver.FindElementByName("Rates Grid");
+            var allHeaders = ratesGrid.FindElementsByTagName("Header");
+
+            Debug.WriteLine($"*** Headers count: {allHeaders.Count}");
+
+            foreach (var item in allHeaders)
+            {
+                Debug.WriteLine($"*** {item.Text} - {item.Displayed} - {item.Enabled}");
+            }
+            var allCells = ratesGrid.FindElementsByTagName("DataItem");
+            Debug.WriteLine($"Grid cells count: {allCells.Count}");
+
+            foreach (var gridCell in allCells)
+            {
+                Debug.WriteLine($"*** Cell Name: {gridCell.GetAttribute("Name")} - Text: {gridCell.Text}");
+                if (gridCell.GetAttribute("Name").StartsWith("State Row") && gridCell.Text.Equals("TXT"))
+                {
+                    gridCell.Click();
+                    Actions actsGrid = new Actions(_driver);
+                    actsGrid.MoveToElement(gridCell);
+                    actsGrid.MoveToElement(gridCell, (gridCell.Size.Width/4), gridCell.Size.Height/2);
+                    actsGrid.Click();
+                    actsGrid.Perform();
                 }
             }
         }
