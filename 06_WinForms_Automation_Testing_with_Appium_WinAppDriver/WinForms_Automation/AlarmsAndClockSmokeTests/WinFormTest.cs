@@ -23,6 +23,26 @@ namespace WinFormsUITesting
             _driver = new WindowsDriver<WindowsElement>(new Uri("http://127.0.0.1:4723"), dcWinForms);
         }
 
+        [ClassCleanup]
+        public static void CleanupAfterAllAlarmsTests()
+        {
+            Debug.WriteLine("ClassCleanup");
+            if (_driver != null)
+            {
+                _driver.Quit();
+            }
+        }
+
+        [TestMethod]
+        public void PopupTest()
+        {
+            _driver.FindElementByName("OpenMessageStrip").Click();
+
+            Thread.Sleep(1000);
+
+            _driver.FindElementByName("Alert").FindElementByName("OK").Click();
+        }
+
         [TestMethod]
         public void TreeTest()
         {
@@ -52,14 +72,6 @@ namespace WinFormsUITesting
             wdvPakistan.Until(x => nodePakistan.Displayed);
 
             nodePakistan.Click();
-        }
-
-        private static void DoubleClick(AppiumWebElement node)
-        {
-            Actions actsTree = new Actions(_driver);
-            actsTree.MoveToElement(node);
-            actsTree.DoubleClick();
-            actsTree.Perform();
         }
 
         [TestMethod]
@@ -179,6 +191,14 @@ namespace WinFormsUITesting
                     actsGrid.Perform();
                 }
             }
+        }
+
+        private static void DoubleClick(AppiumWebElement node)
+        {
+            Actions actsTree = new Actions(_driver);
+            actsTree.MoveToElement(node);
+            actsTree.DoubleClick();
+            actsTree.Perform();
         }
     }
 }
