@@ -24,10 +24,49 @@ namespace WinFormsUITesting
         }
 
         [TestMethod]
+        public void TreeTest()
+        {
+            var tvControl = _driver.FindElementByAccessibilityId("treeView1");
+
+            foreach (var tn in tvControl.FindElementsByTagName("TreeItem"))
+            {
+                Debug.WriteLine($"*** BEFORE: {tn.Text} - Displayed: {tn.Displayed} - Enabled: {tn.Enabled} - Selected: {tn.Selected}");
+            }
+
+            var nodeWorld = tvControl.FindElementByName("World");
+            DoubleClick(nodeWorld);
+
+            Thread.Sleep(1000);
+
+            foreach (var tn in tvControl.FindElementsByTagName("TreeItem"))
+            {
+                Debug.WriteLine($"*** AFTER: {tn.Text} - Displayed: {tn.Displayed} - Enabled: {tn.Enabled} - Selected: {tn.Selected}");
+            }
+
+            var nodeAsia = tvControl.FindElementByName("Asia");
+            DoubleClick(nodeAsia);
+
+            var nodePakistan = tvControl.FindElementByName("Pakistan");
+
+            WebDriverWait wdvPakistan = new WebDriverWait(_driver, TimeSpan.FromSeconds(2));
+            wdvPakistan.Until(x => nodePakistan.Displayed);
+
+            nodePakistan.Click();
+        }
+
+        private static void DoubleClick(AppiumWebElement node)
+        {
+            Actions actsTree = new Actions(_driver);
+            actsTree.MoveToElement(node);
+            actsTree.DoubleClick();
+            actsTree.Perform();
+        }
+
+        [TestMethod]
         public void CheckBoxTest()
         {
             var check = _driver.FindElementByName("checkBox1");
-            
+
             check.Click();
 
             Thread.Sleep(1000);
@@ -43,12 +82,12 @@ namespace WinFormsUITesting
             Debug.WriteLine($"**** Value of radio First: {radioFirst.Selected}");
 
             radioFirst.Click();
-           
+
             Thread.Sleep(1000);
 
             Debug.WriteLine($"**** Value of radio First: {radioFirst.Selected}");
         }
-              
+
         [TestMethod]
         public void ComboTest()
         {
@@ -135,7 +174,7 @@ namespace WinFormsUITesting
                     gridCell.Click();
                     Actions actsGrid = new Actions(_driver);
                     actsGrid.MoveToElement(gridCell);
-                    actsGrid.MoveToElement(gridCell, (gridCell.Size.Width/4), gridCell.Size.Height/2);
+                    actsGrid.MoveToElement(gridCell, (gridCell.Size.Width / 4), gridCell.Size.Height / 2);
                     actsGrid.Click();
                     actsGrid.Perform();
                 }
